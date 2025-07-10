@@ -131,8 +131,33 @@ with st.container():
                                 height=100)
         
         # List of courses
-        courses = st.text_input("📚 List of courses", 
-                               placeholder="e.g., Math, Science, English, History")
+        courses = st.selectbox("📚 List of courses", 
+                              options=[
+                                  "Select a course...",
+                                  "Mathematics (Calculus I, II, III)",
+                                  "Statistics & Probability", 
+                                  "Physics (General, Mechanics, E&M)",
+                                  "Chemistry (General, Organic, Physical)",
+                                  "Biology (General, Molecular, Genetics)",
+                                  "Computer Science (Programming, Data Structures)",
+                                  "English Literature & Composition",
+                                  "Writing & Communication",
+                                  "Psychology (Intro, Cognitive, Social)",
+                                  "Economics (Micro, Macro)",
+                                  "Accounting & Finance",
+                                  "Business Administration",
+                                  "Political Science",
+                                  "History (World, American, European)",
+                                  "Philosophy & Ethics",
+                                  "Foreign Languages (Spanish, French, German)",
+                                  "Art & Art History",
+                                  "Music Theory & Performance",
+                                  "Engineering (Mechanical, Electrical, Civil)",
+                                  "Pre-Med/Pre-Health Sciences",
+                                  "Test Prep (SAT, ACT, GRE, MCAT)",
+                                  "Other (Please specify in background)"
+                              ],
+                              index=0)
         
         # Email Address
         email = st.text_input("💌 Email Address", 
@@ -151,6 +176,8 @@ with st.container():
                 st.error("Please fill in all required fields (First Name, Last Name, and Email Address)")
             elif "@" not in email:
                 st.error("Please enter a valid email address")
+            elif courses == "Select a course...":
+                st.error("Please select a course from the dropdown menu")
             else:
                 # Save to CSV file
                 csv_file = "tutoring_signups.csv"
@@ -162,7 +189,7 @@ with st.container():
                     "Last Name": last_name,
                     "Email": email,
                     "Background": background if background else "Not provided",
-                    "Courses": courses if courses else "Not specified"
+                    "Courses": courses if courses != "Select a course..." else "Not specified"
                 }
                 
                 # Check if file exists
@@ -187,8 +214,8 @@ with st.container():
                 st.write(f"**📧 Email:** {email}")
                 if background:
                     st.write(f"**🌺 Background:** {background}")
-                if courses:
-                    st.write(f"**📚 Courses:** {courses}")
+                if courses and courses != "Select a course...":
+                    st.write(f"**📚 Course:** {courses}")
                 
                 st.info("💌 We'll contact you soon to schedule your first tutoring session! 💌")
                 st.success("✅ Your information has been saved successfully!")
